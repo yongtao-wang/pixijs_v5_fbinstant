@@ -12,26 +12,17 @@ export default class App extends Application {
             height: window.innerHeight
         })
         document.body.appendChild(this.view) // Create Canvas tag in the body
+        this.init()
 
         window.addEventListener('resize', this.onResize.bind(this))
     }
 
-    init(onProgress) {
+    init() {
         this.loader.add('bg', './assets/bg.png')
         this.loader.add('ground', './assets/ground.png')
         this.loader.add('player', './assets/player.png')
         this.loader.add('clouds', './assets/clouds.png')
-
-        /** Calls onProgress each time when the loading progress changes passing a number from 0 to 100 (percents) */
-        const binding = this.loader.onProgress.add(loader => onProgress(loader.progress)) // We save the result of the 'add' function call to be able to remove the listener handler when the loading is finished
-
-        /** Returns promise in order to be able to use await/async syntax */
-        return new Promise(resolve => {
-            this.loader.load(() => {
-                this.loader.onProgress.detach(binding) // Don't forget to remove the listener handler
-                resolve() // We say: "The loading is done!"
-            })
-        })
+        this.loader.load(this.draw.bind(this))
     }
 
     draw() {

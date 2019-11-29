@@ -22,10 +22,7 @@ import App from './App'
 // Wait for the page to load to be sure that FBInstant is already ready to be used
 window.onload = async () => {
     await FBInstant.initializeAsync()
-    const app = new App()
-    await app.init(FBInstant.setLoadingProgress)
-    await FBInstant.startGameAsync() // We say to FBInstant that "everything is loaded and the game is ready to run, so FB lib, please, be prepared as well" :)
-    
-    // At this point everything (your game and FB) is ready and we can start rendering the game
-    app.draw()
+    FBInstant.setLoadingProgress(100)
+    await FBInstant.startGameAsync()
+    new App()
 }
